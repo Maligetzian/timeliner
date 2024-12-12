@@ -1,4 +1,4 @@
-**Timeliner - An Open-Source Toolkit for Visualisation in History Education**
+# Timeliner - An Open-Source Toolkit for Visualisation in History Education
 
 ---
 
