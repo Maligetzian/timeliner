@@ -1,0 +1,20 @@
+name: Create and Push Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create and push new branch
+        run: |
+          git checkout -b new-feature-branch
+          git push --set-upstream origin new-feature-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
