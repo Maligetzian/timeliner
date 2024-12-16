@@ -1,5 +1,5 @@
-// src/components/BasicInputForm.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const BasicInputForm = () => {
   const [useTimestamp, setUseTimestamp] = useState(true);
@@ -8,10 +8,14 @@ const BasicInputForm = () => {
     { timestamp: '', content: '' },
   ]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(rows);
+    try {
+      const response = await axios.post('http://localhost:5000/submit-form', rows);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   const addRow = () => {
