@@ -69,7 +69,7 @@ const BasicInputForm = () => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-center mt-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
@@ -84,7 +84,7 @@ const BasicInputForm = () => {
             type="button"
             onClick={() => setUseTimestamp(!useTimestamp)}
           >
-            Toggle {useTimestamp ? 'Number' : 'Timestamp'}
+            {useTimestamp ? 'Switch to Order View' : 'Switch to Time View'}
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
