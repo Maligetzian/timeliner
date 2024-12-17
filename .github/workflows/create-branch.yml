@@ -3,7 +3,7 @@ name: Create and Push Branch
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   create-branch:
