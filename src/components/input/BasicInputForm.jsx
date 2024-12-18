@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 import FormRow from './FormRow';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import Timeline from '../output/Timeline';
 
 const BasicInputForm = () => {
   const [useTimestamp, setUseTimestamp] = useState(true);
   const [rows, setRows] = useState([
-    { timestamp: '', content: '' },
-    { timestamp: '', content: '' },
+    { timestamp: '1998-03-10T00:00:00', content: 'Hrvoje' },
+    { timestamp: '2007-11-04T00:00:00', content: 'Aleta' },
+    { timestamp: '1969-05-25T00:00:00', content: 'Vlatka' },
+    { timestamp: '1966-09-09T00:00:00', content: 'Kresimir' }
   ]);
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const formRef = useRef(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/submit-form', rows);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
+    setShowTimeline(true);
   };
 
   const addRow = () => {
@@ -38,9 +38,29 @@ const BasicInputForm = () => {
     setRows(newRows);
   };
 
+  useEffect(() => {
+    const formElement = formRef.current;
+    if (showForm) {
+      formElement.style.maxHeight = formElement.scrollHeight + 'px';
+    } else {
+      formElement.style.maxHeight = '0';
+    }
+  }, [showForm]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative">
+      <button
+        className="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? 'Hide Form' : 'Show Form'}
+      </button>
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl overflow-hidden transition-max-height duration-500 ease-in-out"
+        style={{ maxHeight: showForm ? '1000px' : '0', opacity: showForm ? 1 : 0 }}
+      >
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="flex items-center">
             <label className="text-gray-700 text-sm font-bold mr-2">Timestamp</label>
@@ -69,7 +89,7 @@ const BasicInputForm = () => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-end mt-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
@@ -84,7 +104,7 @@ const BasicInputForm = () => {
             type="button"
             onClick={() => setUseTimestamp(!useTimestamp)}
           >
-            {useTimestamp ? 'Switch to Order View' : 'Switch to Time View'}
+            Toggle {useTimestamp ? 'Number' : 'Timestamp'}
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -94,6 +114,7 @@ const BasicInputForm = () => {
           </button>
         </div>
       </form>
+      {showTimeline && <Timeline data={rows} />}
     </div>
   );
 };
