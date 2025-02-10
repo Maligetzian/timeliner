@@ -55,6 +55,7 @@ const BasicInputForm = () => {
           {showForm ? 'Hide Form' : 'Show Form'}
         </button>
         <AdvancedOptions
+            showForm={showForm}
             showOptions={showOptions}
             setShowOptions={setShowOptions}
             spaceProportionally={spaceProportionally}
