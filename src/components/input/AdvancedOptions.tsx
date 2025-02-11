@@ -1,16 +1,37 @@
 import React, { useRef, useLayoutEffect } from 'react';
-import PropTypes from 'prop-types';
 
-const AdvancedOptions = ({ showOptions, setShowOptions, spaceProportionally, setSpaceProportionally, vertical, setVertical, allowBothSides, setAllowBothSides }) => {
-    const optionsRef = useRef(null);
+interface AdvancedOptionsProps {
+    showOptions: boolean;
+    setShowOptions: (show: boolean) => void;
+    spaceProportionally: boolean;
+    setSpaceProportionally: (space: boolean) => void;
+    vertical: boolean;
+    setVertical: (vertical: boolean) => void;
+    allowBothSides: boolean;
+    setAllowBothSides: (allow: boolean) => void;
+}
+
+const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
+                                                             showOptions,
+                                                             setShowOptions,
+                                                             spaceProportionally,
+                                                             setSpaceProportionally,
+                                                             vertical,
+                                                             setVertical,
+                                                             allowBothSides,
+                                                             setAllowBothSides,
+                                                         }) => {
+    const optionsRef = useRef<HTMLDivElement | null>(null);
     const buttonText = showOptions ? 'Hide Advanced Options ▼' : 'Show Advanced Options ▶';
 
     useLayoutEffect(() => {
         const optionsElement = optionsRef.current;
-        if (showOptions) {
-            optionsElement.style.maxHeight = `${optionsElement.scrollHeight}px`;
-        } else {
-            optionsElement.style.maxHeight = '0';
+        if (optionsElement) {
+            if (showOptions) {
+                optionsElement.style.maxHeight = `${optionsElement.scrollHeight}px`;
+            } else {
+                optionsElement.style.maxHeight = '0';
+            }
         }
     }, [showOptions]);
 
@@ -64,17 +85,6 @@ const AdvancedOptions = ({ showOptions, setShowOptions, spaceProportionally, set
             </div>
         </div>
     );
-};
-
-AdvancedOptions.propTypes = {
-    showOptions: PropTypes.bool.isRequired,
-    setShowOptions: PropTypes.func.isRequired,
-    spaceProportionally: PropTypes.bool.isRequired,
-    setSpaceProportionally: PropTypes.func.isRequired,
-    vertical: PropTypes.bool.isRequired,
-    setVertical: PropTypes.func.isRequired,
-    allowBothSides: PropTypes.bool.isRequired,
-    setAllowBothSides: PropTypes.func.isRequired,
 };
 
 export default AdvancedOptions;

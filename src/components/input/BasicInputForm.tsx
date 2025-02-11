@@ -1,35 +1,36 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import FormRow from './FormRow';
 import AdvancedOptions from './AdvancedOptions';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import Timeline from '../output/Timeline';
+import Row from "./Row";
 
-const BasicInputForm = () => {
-  const [useTimestamp, setUseTimestamp] = useState(true);
-  const [rows, setRows] = useState([
+const BasicInputForm: React.FC = () => {
+  const [useTimestamp, setUseTimestamp] = useState<boolean>(true);
+  const [rows, setRows] = useState<Row[]>([
     { timestamp: '1998-03-10T00:00:00', content: 'Hrvoje' },
     { timestamp: '2007-11-04T00:00:00', content: 'Aleta' },
     { timestamp: '1969-05-25T00:00:00', content: 'Vlatka' },
     { timestamp: '1966-09-09T00:00:00', content: 'Kresimir' }
   ]);
-  const [showForm, setShowForm] = useState(true);
-  const [showOptions, setShowOptions] = useState(false);
-  const [spaceProportionally, setSpaceProportionally] = useState(false);
-  const [vertical, setVertical] = useState(false);
-  const [allowBothSides, setAllowBothSides] = useState(false);
-  const formRef = useRef(null);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [spaceProportionally, setSpaceProportionally] = useState<boolean>(false);
+  const [vertical, setVertical] = useState<boolean>(false);
+  const [allowBothSides, setAllowBothSides] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const addRow = () => {
     setRows([...rows, { timestamp: '', content: '' }]);
   };
 
-  const handleChange = (index, field, value) => {
+  const handleChange = (index: number, field: keyof Row, value: string) => {
     const newRows = [...rows];
     newRows[index][field] = value;
     setRows(newRows);
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const newRows = Array.from(rows);
     const [reorderedItem] = newRows.splice(result.source.index, 1);
@@ -40,9 +41,9 @@ const BasicInputForm = () => {
   useLayoutEffect(() => {
     const formElement = formRef.current;
     if (showForm) {
-      formElement.style.maxHeight = `${formElement.scrollHeight}px`;
+      formElement!.style.maxHeight = `${formElement!.scrollHeight}px`;
     } else {
-      formElement.style.maxHeight = '0';
+      formElement!.style.maxHeight = '0';
     }
   }, [showForm, rows]);
 
@@ -55,7 +56,6 @@ const BasicInputForm = () => {
           {showForm ? 'Hide Form' : 'Show Form'}
         </button>
         <AdvancedOptions
-            showForm={showForm}
             showOptions={showOptions}
             setShowOptions={setShowOptions}
             spaceProportionally={spaceProportionally}
