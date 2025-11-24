@@ -81,3 +81,12 @@ As an open-source project, Timeliner benefits from community contributions. The 
 ---
 
 This whitepaper provides a comprehensive overview of Timeliner, highlighting its key features, benefits, and future developments. For more information or to contribute to the project, please visit us at https://github.com/Maligetzian/timeliner or contact us at hrvoje.maligec@protonmail.com.
+
+## Development
+To run the app locally, follow these steps:
+    1. Clone the repository
+    2. Install Node.js and npm
+    3. Run: 
+        npx npm-check-updates -u
+        npm install
+        npm start
